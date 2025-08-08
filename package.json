@@ -1,0 +1,21 @@
+{
+  "name": "online-community",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:init": "node scripts/initialize-db.js",
+    "db:migrate": "node scripts/add-category-column.js",
+    "db:add-parent-id": "node scripts/add-parent-id-to-comments.js"
+  },
+  "dependencies": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "next": "15.4.6",
+    "bootstrap": "^5.3.3",
+    "sqlite3": "^5.1.7"
+  }
+}
