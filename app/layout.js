@@ -1,9 +1,8 @@
-'use client';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Suspense, useEffect } from 'react'; // useEffect 임포트
+import { Suspense } from 'react';
+// import Navbar from './components/Navbar'; // Navbar 임포트 제거
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -12,30 +11,21 @@ export const metadata = {
   description: "A simple community board",
 };
 
-import Navbar from './components/Navbar';
+// ClientLayout 컴포넌트를 임포트할 예정
+import ClientLayout from './components/ClientLayout';
 
 export default function RootLayout({ children }) {
-  useEffect(() => {
-    console.log('Attempting to load Bootstrap JS...');
-    // 클라이언트 사이드에서만 실행되도록 동적 임포트 사용
-    // 로컬에 설치된 bootstrap.bundle.js 파일을 직접 임포트
-    import('bootstrap/dist/js/bootstrap.bundle.js')
-      .then(() => {
-        console.log('Bootstrap JS loaded successfully!');
-      })
-      .catch(error => {
-        console.error('Failed to load Bootstrap JS:', error);
-      });
-  }, []); // 한 번만 실행되도록 빈 배열 전달
-
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar />
-        <main className="container mt-4">
-          <Suspense fallback={<div>Loading...</div>}>            {children}
-          </Suspense>
-        </main>
+        {/* Navbar 대신 ClientLayout을 렌더링 */}
+        <ClientLayout>
+          <main className="container mt-4">
+            <Suspense fallback={<div>Loading...</div>}>
+              {children}
+            </Suspense>
+          </main>
+        </ClientLayout>
       </body>
     </html>
   );
