@@ -2,17 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-
-const categoryMapping = {
-  game: 'Game',
-  politics: 'Politics',
-  'current-events': 'Current Events',
-  music: 'Music',
-  general: 'General',
-  academics: 'Academics',
-};
-
-const categories = Object.values(categoryMapping);
+import { categoryMapping, categories } from '@/lib/constants'; // lib/constants에서 임포트
 
 export default function NewPostPage() {
   const router = useRouter();

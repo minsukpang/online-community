@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
 
-import { categoryMapping } from '@/app/posts/new/page';
+import { categoryMapping } from '@/lib/constants'; // lib/constants에서 임포트
 
 export async function GET(request, { params }) {
   const { categoryName } = params;
@@ -11,7 +11,7 @@ export async function GET(request, { params }) {
     const { data: posts, error } = await supabase
       .from('posts')
       .select('*')
-      .eq('"category"', category) // 컬럼 이름을 큰따옴표로 감쌈
+      .eq('"category"', category)
       .order('createdAt', { ascending: false });
 
     if (error) {
