@@ -1,9 +1,10 @@
-'use client';
+'use client'; // 이 지시어는 이미 추가됨
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { Suspense, useEffect } from 'react';
+import { Suspense } from 'react';
+import Script from 'next/script'; // Script 컴포넌트 임포트
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,11 +16,6 @@ export const metadata = {
 import Navbar from './components/Navbar';
 
 export default function RootLayout({ children }) {
-  useEffect(() => {
-    // 클라이언트 사이드에서만 실행되도록 동적 임포트 사용
-    import('bootstrap/dist/js/bootstrap.bundle.min.js');
-  }, []);
-
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -29,6 +25,11 @@ export default function RootLayout({ children }) {
             {children}
           </Suspense>
         </main>
+        {/* Bootstrap JavaScript를 next/script 컴포넌트로 로드 */}
+        <Script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          strategy="lazyOnload" // 페이지 로드 후 스크립트 로드
+        />
       </body>
     </html>
   );
