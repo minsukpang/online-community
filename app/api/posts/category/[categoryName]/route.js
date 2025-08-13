@@ -1,11 +1,15 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
 
-import { categoryMapping } from '@/lib/constants'; // lib/constants에서 임포트
+// categoryMapping을 lib/constants에서 직접 임포트
+import { categoryMapping } from '@/lib/constants'; 
 
 export async function GET(request, { params }) {
   const { categoryName } = params;
   const category = categoryMapping[categoryName]; 
+
+  console.log('Request categoryName:', categoryName);
+  console.log('Mapped category:', category);
 
   try {
     const { data: posts, error } = await supabase
