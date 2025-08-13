@@ -1,20 +1,27 @@
-
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { supabase } from '@/lib/db'; // db 대신 supabase 임포트
 
 // GET a single post by id
 export async function GET(request, { params }) {
   const { id } = params;
 
-  return new Promise((resolve) => {
-    db.get('SELECT * FROM posts WHERE id = ?', [id], (err, row) => {
-      if (err) {
-        resolve(NextResponse.json({ error: err.message }, { status: 500 }));
-      } else if (row) {
-        resolve(NextResponse.json(row, { status: 200 }));
-      } else {
-        resolve(NextResponse.json({ error: 'Post not found' }, { status: 404 }));
-      }
-    });
-  });
+  try {
+    const { data: post, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('id', id)
+      .single(); // 단일 레코드 반환
+
+    if (error) {
+      console.error('Supabase GET post by ID error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    if (!post) {
+      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    }
+    return NextResponse.json(post, { status: 200 });
+  } catch (e) {
+    console.error('Unexpected error in GET post by ID:', e);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }

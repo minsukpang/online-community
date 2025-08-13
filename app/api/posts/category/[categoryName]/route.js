@@ -1,6 +1,5 @@
-
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { supabase } from '@/lib/db'; // db 대신 supabase 임포트
 
 // GET all posts in a specific category
 export async function GET(request, { params }) {
@@ -9,14 +8,20 @@ export async function GET(request, { params }) {
   // Capitalize the first letter to match the stored category
   const category = categoryName.charAt(0).toUpperCase() + categoryName.slice(1);
 
-  return new Promise((resolve) => {
-    db.all('SELECT * FROM posts WHERE category = ? ORDER BY createdAt DESC', [category], (err, rows) => {
-      if (err) {
-        console.error('API Error fetching posts by category:', err);
-        resolve(NextResponse.json({ error: err.message }, { status: 500 }));
-      } else {
-        resolve(NextResponse.json(rows, { status: 200 }));
-      }
-    });
-  });
+  try {
+    const { data: posts, error } = await supabase
+      .from('posts')
+      .select('*')
+      .eq('category', category)
+      .order('createdAt', { ascending: false });
+
+    if (error) {
+      console.error('Supabase GET posts by category error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(posts, { status: 200 });
+  } catch (e) {
+    console.error('Unexpected error in GET posts by category:', e);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }

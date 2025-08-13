@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { supabase } from '@/lib/db'; // db 대신 supabase 임포트
 
 // Helper function to build a tree of comments
 function buildCommentTree(comments, parentId = null) {
@@ -20,17 +20,24 @@ function buildCommentTree(comments, parentId = null) {
 export async function GET(request, { params }) {
   const { id } = params;
 
-  return new Promise((resolve) => {
-    db.all('SELECT * FROM comments WHERE postId = ? ORDER BY createdAt ASC', [id], (err, rows) => {
-      if (err) {
-        console.error('API Error fetching comments:', err);
-        resolve(NextResponse.json({ error: err.message }, { status: 500 }));
-      } else {
-        const commentTree = buildCommentTree(rows);
-        resolve(NextResponse.json(commentTree, { status: 200 }));
-      }
-    });
-  });
+  try {
+    const { data: comments, error } = await supabase
+      .from('comments')
+      .select('*')
+      .eq('postId', id)
+      .order('createdAt', { ascending: true });
+
+    if (error) {
+      console.error('Supabase GET comments error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    const commentTree = buildCommentTree(comments);
+    return NextResponse.json(commentTree, { status: 200 });
+  } catch (e) {
+    console.error('Unexpected error in GET comments:', e);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
 
 // POST a new comment to a post
@@ -42,14 +49,19 @@ export async function POST(request, { params }) {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 });
   }
 
-  return new Promise((resolve) => {
-    db.run('INSERT INTO comments (postId, content, parentId) VALUES (?, ?, ?)', [postId, content, parentId], function (err) {
-      if (err) {
-        console.error('API Error creating comment:', err);
-        resolve(NextResponse.json({ error: err.message }, { status: 500 }));
-      } else {
-        resolve(NextResponse.json({ id: this.lastID, postId, content, parentId }, { status: 201 }));
-      }
-    });
-  });
+  try {
+    const { data, error } = await supabase
+      .from('comments')
+      .insert([{ postId, content, parentId }])
+      .select();
+
+    if (error) {
+      console.error('Supabase POST comment error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(data[0], { status: 201 });
+  } catch (e) {
+    console.error('Unexpected error in POST comment:', e);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
 }
