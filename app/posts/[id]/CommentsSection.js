@@ -92,6 +92,9 @@ export default function CommentsSection({ postId, initialComments }) {
       body: JSON.stringify({ content: newComment }),
     });
 
+    console.log('Response object:', res); // 추가
+    console.log('res.ok:', res.ok); // 추가
+
     if (res.ok) {
       setNewComment('');
       fetchComments(); // Refresh comments after posting new one
