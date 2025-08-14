@@ -20,6 +20,8 @@ function buildCommentTree(comments, parentId = null) {
 export async function GET(request, { params }) {
   const { id } = params;
 
+  console.log('Request post ID:', id); // 추가
+
   try {
     const { data: comments, error } = await supabase
       .from('comments')
@@ -44,6 +46,8 @@ export async function GET(request, { params }) {
 export async function POST(request, { params }) {
   const { id: postId } = params;
   const { content, parentId = null } = await request.json();
+
+  console.log('POST comment - Request post ID:', postId); // 추가
 
   if (!content) {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 });
