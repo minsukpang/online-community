@@ -12,7 +12,7 @@ function buildCommentTree(comments, parentId = null) {
       }
       tree.push(comment);
     }
-  });
+);
   return tree;
 }
 
@@ -24,8 +24,8 @@ export async function GET(request, { params }) {
     const { data: comments, error } = await supabase
       .from('comments')
       .select('*')
-      .eq('postId', id)
-      .order('createdAt', { ascending: true });
+      .eq('postid', id) // postId 대신 postid 사용
+      .order('createdat', { ascending: true }); // createdat 사용
 
     if (error) {
       console.error('Supabase GET comments error:', error);
@@ -52,7 +52,7 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ postId, content, parentId }])
+      .insert([{ postid: postId, content, parentId }]) // postid 사용
       .select();
 
     if (error) {
