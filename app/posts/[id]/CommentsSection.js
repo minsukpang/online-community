@@ -74,6 +74,7 @@ export default function CommentsSection({ postId, initialComments }) {
     const res = await fetch(`/api/posts/${postId}/comments`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
+      console.log('Fetched comments data:', data); // ADD THIS LOG
       setComments(data);
     } else {
       console.error('Failed to fetch comments');
@@ -92,15 +93,15 @@ export default function CommentsSection({ postId, initialComments }) {
       body: JSON.stringify({ content: newComment }),
     });
 
-    console.log('Response object:', res); // 추가
-    console.log('res.ok:', res.ok); // 추가
+    console.log('Response object:', res);
+    console.log('res.ok:', res.ok);
 
     if (res.ok) {
-      console.log('Comment posted successfully! Updating UI...'); // ADD THIS LOG
+      console.log('Comment posted successfully! Updating UI...');
       setNewComment('');
       fetchComments(); // Refresh comments after posting new one
     } else {
-      console.log('Comment post failed. Alerting user.'); // ADD THIS LOG
+      console.log('Comment post failed. Alerting user.');
       alert('Failed to post comment');
     }
   };
