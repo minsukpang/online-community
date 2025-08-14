@@ -96,9 +96,11 @@ export default function CommentsSection({ postId, initialComments }) {
     console.log('res.ok:', res.ok); // 추가
 
     if (res.ok) {
+      console.log('Comment posted successfully! Updating UI...'); // ADD THIS LOG
       setNewComment('');
       fetchComments(); // Refresh comments after posting new one
     } else {
+      console.log('Comment post failed. Alerting user.'); // ADD THIS LOG
       alert('Failed to post comment');
     }
   };
