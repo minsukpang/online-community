@@ -20,9 +20,10 @@ function buildCommentTree(comments, parentId = null) {
 export async function GET(request, { params }) {
   const { id } = params;
 
-  console.log('GET comments - Request post ID:', id);
+  console.log('GET comments - Request post ID:', id); // 이미 추가됨
 
   try {
+    console.log('Supabase query: from comments select * eq postid', id); // 추가
     const { data: comments, error } = await supabase
       .from('comments')
       .select('*')
@@ -33,6 +34,8 @@ export async function GET(request, { params }) {
       console.error('Supabase GET comments error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+
+    console.log('Supabase GET comments result:', comments); // 추가
 
     const commentTree = buildCommentTree(comments);
     return NextResponse.json(commentTree, { status: 200 });
@@ -49,7 +52,7 @@ export async function POST(request, { params }) {
 
   console.log('POST comment - Request post ID:', postId);
   console.log('POST comment - Content:', content);
-  console.log('POST comment - Parent ID:', parentId); // 추가
+  console.log('POST comment - Parent ID:', parentId);
 
   if (!content) {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 });
