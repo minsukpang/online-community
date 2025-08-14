@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/db';
 
-// categoryMapping을 lib/constants에서 직접 임포트
-import { categoryMapping } from '@/lib/constants'; 
+import { categoryMapping } from '@/lib/constants';
 
 export async function GET(request, { params }) {
   const { categoryName } = params;
@@ -16,7 +15,7 @@ export async function GET(request, { params }) {
       .from('posts')
       .select('*')
       .eq('"category"', category)
-      .order('createdAt', { ascending: false });
+      .order('createdat', { ascending: false }); // createdAt 대신 createdat 사용
 
     if (error) {
       console.error('Supabase GET posts by category error:', error);
