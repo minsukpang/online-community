@@ -5,7 +5,7 @@ import { supabase } from '@/lib/db'; // db 대신 supabase 임포트
 function buildCommentTree(comments, parentId = null) {
   const tree = [];
   comments.forEach(comment => {
-    if (comment.parentId === parentId) {
+    if (comment.parentid === parentId) { // Use 'parentid' (lowercase)
       const children = buildCommentTree(comments, comment.id);
       if (children.length) {
         comment.children = children;
