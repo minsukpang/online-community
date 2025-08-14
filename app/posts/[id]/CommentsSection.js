@@ -31,7 +31,7 @@ function CommentItem({ comment, postId, onReplySuccess }) {
   return (
     <li className="list-group-item mb-2">
       <div>{comment.content}</div>
-      <small className="text-muted">Posted at: {new Date(comment.createdAt).toLocaleString()}</small>
+      <small className="text-muted">Posted at: {new Date(comment.createdat).toLocaleString()}</small>
       <button className="btn btn-sm btn-link" onClick={() => setShowReplyForm(!showReplyForm)}>
         {showReplyForm ? 'Cancel' : 'Reply'}
       </button>
