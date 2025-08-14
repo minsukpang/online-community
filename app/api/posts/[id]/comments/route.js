@@ -24,7 +24,7 @@ export async function GET(request, { params }) {
     const { data: comments, error } = await supabase
       .from('comments')
       .select('*')
-      .eq('"postId"', id) // postId를 큰따옴표로 감쌈
+      .eq('postid', id) // "postId" 대신 postid 사용
       .order('createdat', { ascending: true }); // createdat 사용
 
     if (error) {
@@ -52,12 +52,12 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ "postId": postId, content, parentId }]) // postId를 큰따옴표로 감쌈
+      .insert([{ postid: postId, content, parentId }]) // "postId" 대신 postid 사용
       .select();
 
     if (error) {
       console.error('Supabase POST comment error:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: err.message }, { status: 500 });
     }
     return NextResponse.json(data[0], { status: 201 });
   } catch (e) {
