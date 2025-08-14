@@ -61,12 +61,12 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ postid: postId, content, parentid: parentId }])
+      .insert([{ postId: postId, content, parentId: parentId }])
       .select();
 
     if (error) {
       console.error('Supabase POST comment error:', error);
-      return NextResponse.json({ error: err.message }, { status: 500 });
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
     return NextResponse.json(data[0], { status: 201 });
   } catch (e) {
