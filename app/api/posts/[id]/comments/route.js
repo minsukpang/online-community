@@ -30,6 +30,7 @@ export async function GET(request, { params }) {
       console.error('Supabase GET comments error:', error);
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
+    console.log('GET comments result:', comments); // ADDED LOG
     const commentTree = buildCommentTree(comments);
     return NextResponse.json(commentTree, { status: 200 });
   } catch (e) {

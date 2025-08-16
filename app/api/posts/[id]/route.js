@@ -19,6 +19,7 @@ export async function GET(request, { params }) {
     if (!post) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
+    console.log('GET single post result:', post); // ADDED LOG
     return NextResponse.json(post, { status: 200 });
   } catch (e) {
     console.error('Unexpected error in GET post by ID:', e);
