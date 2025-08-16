@@ -7,7 +7,7 @@ export async function GET() {
     const { data: posts, error } = await supabase
       .from('posts')
       .select('*')
-      .order('createdAt', { ascending: false }); // 최신순 정렬
+      .order('createdat', { ascending: false }); // 최신순 정렬
 
     if (error) {
       console.error('Supabase GET posts error:', error);
@@ -22,7 +22,7 @@ export async function GET() {
 
 // POST a new post
 export async function POST(request) {
-  const { title, content, category } = await request.json();
+  const { title, content, category, imageUrl = null } = await request.json();
 
   if (!title || !content || !category) {
     return NextResponse.json({ error: 'Title, content, and category are required' }, { status: 400 });
@@ -31,7 +31,7 @@ export async function POST(request) {
   try {
     const { data, error } = await supabase
       .from('posts')
-      .insert([{ title, content, category }])
+      .insert([{ title, content, category, imageUrl }])
       .select(); // 삽입된 데이터 반환
 
     if (error) {

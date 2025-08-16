@@ -48,7 +48,7 @@ export async function GET(request, { params }) {
 // POST a new comment to a post
 export async function POST(request, { params }) {
   const { id: postId } = params;
-  const { content, parentId = null } = await request.json();
+  const { content, parentId = null, imageUrl = null } = await request.json();
 
   console.log('POST comment - Request post ID:', postId);
   console.log('POST comment - Content:', content);
@@ -61,7 +61,7 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ postid: postId, content, parentid: parentId }])
+      .insert([{ postid: postId, content, parentid: parentId, imageUrl: imageUrl }])
       .select();
 
     if (error) {

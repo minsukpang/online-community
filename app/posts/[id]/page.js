@@ -30,6 +30,9 @@ export default async function PostDetailPage({ params }) {
           <h1 className="card-title">{post.title}</h1>
           <h6 className="card-subtitle mb-2 text-muted">Category: {post.category}</h6>
           <p className="card-text">{post.content}</p>
+          {post.imageUrl && (
+            <img src={post.imageUrl} alt={post.title} className="img-fluid rounded my-3" />
+          )}
         </div>
       </div>
 
