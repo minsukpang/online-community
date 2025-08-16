@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react';
 
-// NOTE: This is a temporary, simplified version for debugging.
-
 function CommentItem({ comment, postId, onReplySuccess }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
   const [replyContent, setReplyContent] = useState('');
@@ -32,7 +30,6 @@ function CommentItem({ comment, postId, onReplySuccess }) {
   return (
     <li className="list-group-item mb-2">
       <div>{comment.content}</div>
-      {/* Image display is temporarily removed */}
       <small className="text-muted">Posted at: {new Date(comment.createdat).toLocaleString()}</small>
       <button className="btn btn-sm btn-link" onClick={() => setShowReplyForm(!showReplyForm)}>
         {showReplyForm ? 'Cancel' : 'Reply'}
@@ -47,7 +44,6 @@ function CommentItem({ comment, postId, onReplySuccess }) {
             value={replyContent}
             onChange={(e) => setReplyContent(e.target.value)}
           ></textarea>
-          {/* File input is temporarily removed */}
           <button type="submit" className="btn btn-sm btn-primary">Post Reply</button>
         </form>
       )}
@@ -119,7 +115,6 @@ export default function CommentsSection({ postId, initialComments }) {
             onChange={(e) => setNewComment(e.target.value)}
           ></textarea>
         </div>
-        {/* File input is temporarily removed */}
         <button type="submit" className="btn btn-primary">Post Comment</button>
       </form>
 
