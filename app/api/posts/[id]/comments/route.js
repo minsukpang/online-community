@@ -41,7 +41,7 @@ export async function GET(request, { params }) {
 // POST a new comment to a post
 export async function POST(request, { params }) {
   const { id: postId } = params;
-  const { content, parentId = null } = await request.json();
+  const { content, parentId = null, imageUrl = null } = await request.json();
 
   if (!content) {
     return NextResponse.json({ error: 'Content is required' }, { status: 400 });
@@ -50,7 +50,7 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ postid: postId, content, parentid: parentId }])
+      .insert([{ postid: postId, content, parentid: parentId, imageUrl: imageUrl }])
       .select();
 
     if (error) {
