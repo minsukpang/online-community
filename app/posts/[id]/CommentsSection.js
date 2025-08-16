@@ -42,7 +42,7 @@ function CommentItem({ comment, postId, onReplySuccess }) {
     const res = await fetch(`/api/posts/${postId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: replyContent, parentId: comment.id, imageUrl }),
+      body: JSON.stringify({ content: replyContent, parentId: comment.id, imageurl: imageUrl }),
     });
 
     if (res.ok) {
@@ -58,8 +58,8 @@ function CommentItem({ comment, postId, onReplySuccess }) {
   return (
     <li className="list-group-item mb-2">
       <div>{comment.content}</div>
-      {comment.imageUrl && (
-        <img src={comment.imageUrl} alt="Comment image" className="img-fluid rounded my-2" style={{ maxHeight: '200px' }} />
+      {comment.imageurl && (
+        <img src={comment.imageurl} alt="Comment image" className="img-fluid rounded my-2" style={{ maxHeight: '200px' }} />
       )}
       <small className="text-muted">Posted at: {new Date(comment.createdat).toLocaleString()}</small>
       <button className="btn btn-sm btn-link" onClick={() => setShowReplyForm(!showReplyForm)}>
@@ -150,7 +150,7 @@ export default function CommentsSection({ postId, initialComments }) {
     const res = await fetch(`/api/posts/${postId}/comments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: newComment, imageUrl }),
+      body: JSON.stringify({ content: newComment, imageurl: imageUrl }),
     });
 
     if (res.ok) {

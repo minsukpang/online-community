@@ -50,7 +50,7 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ postid: postId, content, parentid: parentId, imageUrl: imageUrl }])
+      .insert([{ postid: postId, content, parentid: parentId, imageurl: imageUrl }])
       .select();
 
     if (error) {

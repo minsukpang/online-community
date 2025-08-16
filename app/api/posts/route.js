@@ -31,7 +31,7 @@ export async function POST(request) {
   try {
     const { data, error } = await supabase
       .from('posts')
-      .insert([{ title, content, category, imageUrl }])
+      .insert([{ title, content, category, imageurl: imageUrl }])
       .select(); // 삽입된 데이터 반환
 
     if (error) {
