@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 function CommentItem({ comment, postId, onReplySuccess }) {
   const [showReplyForm, setShowReplyForm] = useState(false);
@@ -21,7 +22,7 @@ function CommentItem({ comment, postId, onReplySuccess }) {
     if (res.ok) {
       setReplyContent('');
       setShowReplyForm(false);
-      onReplySuccess();
+      onReplySuccess(); // Callback to refresh comments in parent
     } else {
       alert('Failed to post reply');
     }
@@ -57,7 +58,7 @@ function CommentItem({ comment, postId, onReplySuccess }) {
               postId={postId}
               onReplySuccess={onReplySuccess}
             />
-          ))
+          ))}
         </ul>
       )}
     </li>
@@ -67,6 +68,7 @@ function CommentItem({ comment, postId, onReplySuccess }) {
 export default function CommentsSection({ postId, initialComments }) {
   const [comments, setComments] = useState(initialComments);
   const [newComment, setNewComment] = useState('');
+  const router = useRouter();
 
   const fetchComments = async () => {
     const res = await fetch(`/api/posts/${postId}/comments`, { cache: 'no-store' });
@@ -92,7 +94,7 @@ export default function CommentsSection({ postId, initialComments }) {
 
     if (res.ok) {
       setNewComment('');
-      fetchComments();
+      fetchComments(); // Refresh comments after posting new one
     } else {
       alert('Failed to post comment');
     }

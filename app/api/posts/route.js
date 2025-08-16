@@ -22,7 +22,7 @@ export async function GET() {
 
 // POST a new post
 export async function POST(request) {
-  const { title, content, category, imageUrl = null } = await request.json();
+  const { title, content, category } = await request.json();
 
   if (!title || !content || !category) {
     return NextResponse.json({ error: 'Title, content, and category are required' }, { status: 400 });
@@ -31,7 +31,7 @@ export async function POST(request) {
   try {
     const { data, error } = await supabase
       .from('posts')
-      .insert([{ title, content, category, imageUrl }])
+      .insert([{ title, content, category }])
       .select(); // 삽입된 데이터 반환
 
     if (error) {

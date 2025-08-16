@@ -48,7 +48,7 @@ export async function GET(request, { params }) {
 // POST a new comment to a post
 export async function POST(request, { params }) {
   const { id: postId } = params;
-  const { content, parentId = null, imageUrl = null } = await request.json();
+  const { content, parentId = null } = await request.json();
 
   console.log('POST comment - Request post ID:', postId);
   console.log('POST comment - Content:', content);
@@ -61,8 +61,19 @@ export async function POST(request, { params }) {
   try {
     const { data, error } = await supabase
       .from('comments')
-      .insert([{ postid: postId, content, parentid: parentId, imageUrl: imageUrl }])
+      .insert([{ postid: postId, content, parentid: parentId }])
       .select();
+
+    if (error) {
+      console.error('Supabase POST comment error:', error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(data[0], { status: 201 });
+  } catch (e) {
+    console.error('Unexpected error in POST comment:', e);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+  }
+}
 
     if (error) {
       console.error('Supabase POST comment error:', error);
