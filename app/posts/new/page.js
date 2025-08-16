@@ -56,6 +56,7 @@ export default function NewPostPage() {
         .getPublicUrl(fileName);
 
       imageUrl = urlData.publicUrl;
+      console.log('Generated imageUrl:', imageUrl); // ADDED LOG
       setUploading(false);
     }
 

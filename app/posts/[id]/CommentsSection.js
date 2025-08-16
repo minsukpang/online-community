@@ -36,6 +36,7 @@ function CommentItem({ comment, postId, onReplySuccess }) {
 
       const { data: urlData } = supabase.storage.from('media').getPublicUrl(fileName);
       imageUrl = urlData.publicUrl;
+      console.log('Generated reply imageUrl:', imageUrl); // ADDED LOG
       setUploading(false);
     }
 
@@ -144,6 +145,7 @@ export default function CommentsSection({ postId, initialComments }) {
 
       const { data: urlData } = supabase.storage.from('media').getPublicUrl(fileName);
       imageUrl = urlData.publicUrl;
+      console.log('Generated new comment imageUrl:', imageUrl); // ADDED LOG
       setUploading(false);
     }
 
