@@ -29,9 +29,11 @@ export async function POST(request) {
   }
 
   try {
+    try {
+    console.log('Inserting post data:', { title, content, category, imageurl }); // ADDED LOG
     const { data, error } = await supabase
       .from('posts')
-      .insert([{ title, content, category, imageurl: imageUrl }])
+      .insert([{ title, content, category, imageurl }])
       .select(); // 삽입된 데이터 반환
 
     if (error) {
