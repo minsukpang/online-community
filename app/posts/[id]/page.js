@@ -33,7 +33,6 @@ export default async function PostDetailPage({ params }) {
             <img src={post.imageUrl} alt={post.title} className="img-fluid rounded my-3" />
           )}
         </div>
-        </div>
       </div>
 
       <hr className="my-4" />
