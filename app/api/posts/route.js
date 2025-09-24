@@ -22,17 +22,19 @@ export async function GET() {
 
 // POST a new post
 export async function POST(request) {
-  const { title, content, category, imageUrl = null } = await request.json();
+  // The form sends 'imageurl' (lowercase), so we map it to 'imageUrl'
+  const { title, content, category, imageurl: imageUrl = null } = await request.json();
 
   if (!title || !content || !category) {
     return NextResponse.json({ error: 'Title, content, and category are required' }, { status: 400 });
   }
 
   try {
-    console.log('Inserting post data:', { title, content, category, imageurl: imageUrl }); // ADDED LOG
+    console.log('Inserting post data:', { title, content, category, imageUrl: imageUrl }); // Corrected LOG
     const { data, error } = await supabase
       .from('posts')
-      .insert([{ title, content, category, imageurl: imageUrl }])
+      // The database column is 'imageUrl' (camelCase)
+      .insert([{ title, content, category, imageUrl: imageUrl }])
       .select(); // 삽입된 데이터 반환
 
     if (error) {
